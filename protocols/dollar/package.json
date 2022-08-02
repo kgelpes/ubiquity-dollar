@@ -1,0 +1,66 @@
+{
+  "name": "@ubiquity/ubiquity-dollar",
+  "version": "1.0.0",
+  "description": "Ubiquity Algorithmic Dollar smart protocols",
+  "author": "Ubiquity DAO",
+  "license": "Apache-2.0",
+  "homepage": "https://dao.ubq.fi/dollar",
+  "bugs": {
+    "url": "https://github.com/ubiquity/ubiquity-dollar/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ubiquity/ubiquity-dollar.git"
+  },
+  "scripts": {
+    "deploy": "hardhat deploy --network localhost",
+    "clean": "hardhat clean",
+    "build": "TS_NODE_TRANSPILE_ONLY=1 npx hardhat compile",
+    "test": "hardhat test",
+    "test:coverage": "hardhat coverage",
+    "lint": "run-s lint:* build",
+    "lint:sol": "solhint 'protocols/**/*.sol' --fix",
+    "lint:eslint": "eslint . --ext js,ts --fix",
+    "lint:prettier": "prettier --write .",
+    "start": "hardhat node --hostname 0.0.0.0 --no-deploy --show-accounts",
+    "faucet": "hardhat faucet --network localhost",
+    "price-reset": "hardhat priceReset --price 1.00 --network mainnet --dryrun false"
+  },
+  "keywords": [
+    "stablecoin",
+    "erc20",
+    "ethereum",
+    "defi",
+    "ubiquity",
+    "dao",
+    "dollar",
+    "decentralization",
+    "token",
+    "algorithmic"
+  ],
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lavamoat": {
+    "allowScripts": {
+      "core-js": false,
+      "keccak": false,
+      "secp256k1": false,
+      "web3": false,
+      "bufferutil": false,
+      "utf-8-validate": false,
+      "core-js-pure": false,
+      "postinstall-postinstall": false,
+      "husky": false
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/ethereum-block-by-date": "^1.4.1",
+    "ethereum-block-by-date": "^1.4.5",
+    "nodemon": "^2.0.19"
+  }
+}

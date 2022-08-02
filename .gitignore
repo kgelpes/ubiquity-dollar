@@ -45,9 +45,10 @@ typings
 /abi/types/*
 
 ###
-contracts/*/deployments/*
-!contracts/*/deployments/mainnet
-contracts/dollar/tasks/library/distributor/fixtures/operators.json
+protocols/*/deployments/*
+!protocols/*/deployments/mainnet
+protocols/dollar/tasks/library/distributor/fixtures/operators.json
 fixtures/abi/types/
 web/dapp/
 fixtures/contracts-addresses/*
+cache

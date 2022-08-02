@@ -97,7 +97,7 @@ const config: HardhatUserConfig = {
     target: "ethers-v5",
   },
   paths: {
-    sources: "contracts",
+    sources: "protocols",
     deploy: "deploy",
     deployments: "deployments",
     tests: "tests",

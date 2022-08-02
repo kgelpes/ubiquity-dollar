@@ -1,11 +1,11 @@
 # doesn't seem to work
-!contracts/*/deployments/mainnet/
+!protocols/*/deployments/mainnet/
 #
 .next/
-contracts/*/artifacts/
-contracts/*/cache/
-contracts/*/deployments/
-contracts/*/types/
+protocols/*/artifacts/
+protocols/*/cache/
+protocols/*/deployments/
+protocols/*/types/
 
 fixtures/
 web/dapp/

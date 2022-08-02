@@ -9,7 +9,7 @@ generateAddressesFile("ubiquistick");
 function getContractsAddressesFor(directory) {
   const directoryContractsNames = [];
   const chains = {};
-  const deploymentsPath = path.join(__dirname, "..", "contracts", directory, "deployments");
+  const deploymentsPath = path.join(__dirname, "..", "protocols", directory, "deployments");
   const chainsDirectories = fs.readdirSync(deploymentsPath);
   chainsDirectories.forEach(_processDirectory(deploymentsPath, chains, directoryContractsNames));
   return chains;

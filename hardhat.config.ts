@@ -9,10 +9,10 @@ import "hardhat-gas-reporter";
 import { HardhatUserConfig } from "hardhat/types";
 import path from "path";
 import "solidity-coverage";
-import { colorizeText } from "./tasks/utils/console-colors";
+import { colorizeText } from "./protocols/dollar/tasks/utils/console-colors";
 
 if (fs.existsSync(path.join(__dirname, "artifacts/types"))) {
-  import("./tasks/index");
+  import("./protocols/dollar/tasks/index");
 } else {
   console.warn("Tasks loading skipped until compilation artifacts are available");
 }
@@ -28,7 +28,7 @@ if (!MNEMONIC) {
   accounts.mnemonic = MNEMONIC;
 }
 
-const config: HardhatUserConfig = {
+const config = {
   solidity: {
     compilers: [
       {
@@ -133,7 +133,7 @@ const config: HardhatUserConfig = {
     // Obtain one at https://etherscan.io/
     apiKey: getKey("ETHERSCAN"),
   },
-};
+} as HardhatUserConfig;
 
 export default config;
 

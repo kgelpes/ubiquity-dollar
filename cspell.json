@@ -9,10 +9,10 @@
     "**/*.lock",
     "**/node_modules/**",
     "fixtures/abi/types/**",
-    "contracts/*/deployments/**",
-    "contracts/*/artifacts/**",
-    "contracts/*/cache/**",
-    "contracts/*/types/**"
+    "protocols/*/deployments/**",
+    "protocols/*/artifacts/**",
+    "protocols/*/cache/**",
+    "protocols/*/types/**"
   ],
   "words": [
     "UbiquiStick",
