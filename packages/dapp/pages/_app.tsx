@@ -34,24 +34,14 @@ const noOverlayWorkaroundScript = `
 })()
 `;
 
-// const App = () => {
-//   return (
-//     <WagmiConfig client={wagmiClient}>
-//       <RainbowKitProvider chains={chains}>
-//         <YourApp />
-//       </RainbowKitProvider>
-//     </WagmiConfig>
-//   );
-// };
-
 export default function Ubiquity({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
         modalSize="compact"
         theme={darkTheme({
-          accentColor: "#80FFFF",
-          accentColorForeground: "white",
+          accentColor: "#00FFFF",
+          accentColorForeground: "#000000",
           borderRadius: "small",
           fontStack: "system",
           overlayBlur: "small",

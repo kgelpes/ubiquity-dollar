@@ -57,7 +57,9 @@ const Sidebar = () => {
           </ul>
           <ul>
             <li>
-              <RainbowWallet />
+              <div id="RainbowWallet">
+                <RainbowWallet />
+              </div>
             </li>
           </ul>
         </div>

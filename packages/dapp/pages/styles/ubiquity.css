@@ -141,6 +141,9 @@ video {
   min-height: 16px;
   vertical-align: middle;
 }
+#Sidebar #RainbowWallet {
+  display: inline-block;
+}
 #Sidebar ul li {
   position: relative;
 }
