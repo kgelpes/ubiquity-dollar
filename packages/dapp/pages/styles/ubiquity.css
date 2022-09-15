@@ -429,3 +429,25 @@ aside {
 #CreditOperations[data-twap^="1."] #RedeemUcr > div {
   pointer-events: unset;
 }
+
+#RainbowWallet
+  > div
+  > button
+  > div.iekbcc0.ju367v70.ju367v7l.ju367v85.ju367v6e.ju367v9x.ju367vc9.ju367vn.ju367vt.ju367vw.ju367vfc.ju367v11.ju367v1c.ju367v8o
+  > div
+  > div.iekbcc0.ju367v8,
+body
+  > div:nth-child(6)
+  > div
+  > div
+  > div._9pm4ki5.ju367va.ju367v10.ju367v8m
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div.iekbcc0.ju367v4p.ju367v2y.ju367v3j.ju367v44.ju367v4.ju367va.ju367v10.ju367v1n.ju367v2l
+  > div.iekbcc0.ju367v4i {
+  /* hide rainbow wallet emoji */
+  display: none;
+}
