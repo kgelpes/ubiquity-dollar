@@ -10,7 +10,7 @@ import Background from "../components/layout/Background";
 import Layout from "@/components/layout/Layout";
 
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { getDefaultWallets, RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -47,7 +47,17 @@ const noOverlayWorkaroundScript = `
 export default function Ubiquity({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
+      <RainbowKitProvider
+        modalSize="compact"
+        theme={darkTheme({
+          accentColor: "#80FFFF",
+          accentColorForeground: "white",
+          borderRadius: "small",
+          fontStack: "system",
+          overlayBlur: "small",
+        })}
+        chains={chains}
+      >
         {GenerateHead()}
         <AppContextProvider>
           <Background></Background>
