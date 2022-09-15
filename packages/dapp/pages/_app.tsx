@@ -9,6 +9,23 @@ import AppContextProvider from "@/lib/AppContextProvider";
 import Background from "../components/layout/Background";
 import Layout from "@/components/layout/Layout";
 
+import "@rainbow-me/rainbowkit/styles.css";
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
+
+const { chains, provider } = configureChains([chain.mainnet], [alchemyProvider({ apiKey: process.env.API_KEY_ALCHEMY }), publicProvider()]);
+const { connectors } = getDefaultWallets({
+  appName: "Ubiquity Dollar",
+  chains,
+});
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider,
+});
+
 const noOverlayWorkaroundScript = `
 ;(function () {
 	const stopPropagation = (event) => event.stopImmediatePropagation();
@@ -17,17 +34,29 @@ const noOverlayWorkaroundScript = `
 })()
 `;
 
+// const App = () => {
+//   return (
+//     <WagmiConfig client={wagmiClient}>
+//       <RainbowKitProvider chains={chains}>
+//         <YourApp />
+//       </RainbowKitProvider>
+//     </WagmiConfig>
+//   );
+// };
+
 export default function Ubiquity({ Component, pageProps }: AppProps): JSX.Element {
   return (
-    <>
-      {GenerateHead()}
-      <AppContextProvider>
-        <Background></Background>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </AppContextProvider>
-    </>
+    <WagmiConfig client={wagmiClient}>
+      <RainbowKitProvider chains={chains}>
+        {GenerateHead()}
+        <AppContextProvider>
+          <Background></Background>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </AppContextProvider>
+      </RainbowKitProvider>
+    </WagmiConfig>
   );
 }
 
