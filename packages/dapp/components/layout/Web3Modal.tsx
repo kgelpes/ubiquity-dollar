@@ -1,7 +1,6 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { providers } from "ethers";
 import { useCallback, useEffect, useReducer } from "react";
-import WalletLink from "walletlink";
 import Web3Modal from "web3modal";
 // import { ellipseAddress, getChainData } from "../lib/utilities";
 
@@ -14,29 +13,34 @@ const providerOptions = {
       infuraId: INFURA_ID, // required
     },
   },
-  "custom-walletlink": {
-    display: {
-      logo: "https://play-lh.googleusercontent.com/PjoJoG27miSglVBXoXrxBSLveV6e3EeBPpNY55aiUUBM9Q1RCETKCOqdOkX2ZydqVf0",
-      name: "Coinbase",
-      description: "Connect to Coinbase Wallet (not Coinbase App)",
-    },
-    options: {
-      appName: "Coinbase", // Your app name
-      networkUrl: `https://mainnet.infura.io/v3/${INFURA_ID}`,
-      chainId: 1,
-    },
-    package: WalletLink,
-    connector: async (_, options) => {
-      const { appName, networkUrl, chainId } = options;
-      const walletLink = new WalletLink({
-        appName,
-      });
-      const provider = walletLink.makeWeb3Provider(networkUrl, chainId);
-      await provider.enable();
-      return provider;
-    },
-  },
 };
+
+type StateType = {
+  provider?: any;
+  web3Provider?: any;
+  walletAddress?: null | string;
+  chainId?: null | number;
+};
+
+type ActionType =
+  | {
+      type: "SET_WEB3_PROVIDER";
+      provider?: StateType["provider"];
+      web3Provider?: StateType["web3Provider"];
+      walletAddress?: StateType["walletAddress"];
+      chainId?: StateType["chainId"];
+    }
+  | {
+      type: "SET_ADDRESS";
+      walletAddress?: StateType["walletAddress"];
+    }
+  | {
+      type: "SET_CHAIN_ID";
+      chainId?: StateType["chainId"];
+    }
+  | {
+      type: "RESET_WEB3_PROVIDER";
+    };
 
 let web3Modal: Web3Modal;
 if (typeof window !== "undefined") {
@@ -47,37 +51,10 @@ if (typeof window !== "undefined") {
   });
 }
 
-type StateType = {
-  provider?: any;
-  web3Provider?: any;
-  address?: null | string;
-  chainId?: null | number;
-};
-
-type ActionType =
-  | {
-      type: "SET_WEB3_PROVIDER";
-      provider?: StateType["provider"];
-      web3Provider?: StateType["web3Provider"];
-      address?: StateType["address"];
-      chainId?: StateType["chainId"];
-    }
-  | {
-      type: "SET_ADDRESS";
-      address?: StateType["address"];
-    }
-  | {
-      type: "SET_CHAIN_ID";
-      chainId?: StateType["chainId"];
-    }
-  | {
-      type: "RESET_WEB3_PROVIDER";
-    };
-
 const initialState: StateType = {
   provider: null,
   web3Provider: null,
-  address: null,
+  walletAddress: null,
   chainId: null,
 };
 
@@ -88,13 +65,13 @@ function reducer(state: StateType, action: ActionType): StateType {
         ...state,
         provider: action.provider,
         web3Provider: action.web3Provider,
-        address: action.address,
+        walletAddress: action.walletAddress,
         chainId: action.chainId,
       };
     case "SET_ADDRESS":
       return {
         ...state,
-        address: action.address,
+        walletAddress: action.walletAddress,
       };
     case "SET_CHAIN_ID":
       return {
@@ -110,7 +87,7 @@ function reducer(state: StateType, action: ActionType): StateType {
 
 export const Home = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { provider, web3Provider, address, chainId } = state;
+  const { provider, web3Provider, walletAddress } = state;
 
   const connect = useCallback(async function () {
     // This is the initial `provider` that is returned when
@@ -123,7 +100,7 @@ export const Home = (): JSX.Element => {
     const web3Provider = new providers.Web3Provider(provider);
 
     const signer = web3Provider.getSigner();
-    const address = await signer.getAddress();
+    const walletAddress = await signer.getAddress();
 
     const network = await web3Provider.getNetwork();
 
@@ -131,7 +108,7 @@ export const Home = (): JSX.Element => {
       type: "SET_WEB3_PROVIDER",
       provider,
       web3Provider,
-      address,
+      walletAddress,
       chainId: network.chainId,
     });
   }, []);
@@ -166,7 +143,7 @@ export const Home = (): JSX.Element => {
         console.log("accountsChanged", accounts);
         dispatch({
           type: "SET_ADDRESS",
-          address: accounts[0],
+          walletAddress: accounts[0],
         });
       };
 
@@ -198,9 +175,9 @@ export const Home = (): JSX.Element => {
   return (
     <div>
       <div>
-        {address && (
+        {walletAddress && (
           <div>
-            <span>{shortenAddress(address)}</span>
+            <span>{shortenAddress(walletAddress)}</span>
           </div>
         )}
       </div>
@@ -222,6 +199,6 @@ export const Home = (): JSX.Element => {
 
 export default Home;
 
-function shortenAddress(address: string) {
-  return address.slice(0, 6) + "..." + address.slice(-4);
+function shortenAddress(walletAddress: string) {
+  return walletAddress.slice(0, 6) + "..." + walletAddress.slice(-4);
 }
