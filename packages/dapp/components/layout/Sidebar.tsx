@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Icon, { IconsNames } from "../ui/Icon";
-import WalletConnect from "./WalletConnect";
+import Web3modal from "./Web3Modal";
 
 const PROD = process.env.NODE_ENV == "production";
 
@@ -56,7 +56,7 @@ const Sidebar = () => {
           </ul>
           <ul>
             <li>
-              <WalletConnect />
+              <Web3modal />
             </li>
           </ul>
         </div>

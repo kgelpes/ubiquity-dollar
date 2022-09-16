@@ -426,3 +426,10 @@ aside {
 #CreditOperations[data-twap^="1."] #RedeemUcr > div {
   pointer-events: unset;
 }
+
+#walletconnect-qrcode-modal svg {
+  max-width: unset;
+  max-height: unset;
+  height: unset;
+  width: unset;
+}

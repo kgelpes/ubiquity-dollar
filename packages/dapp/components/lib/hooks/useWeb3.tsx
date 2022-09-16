@@ -50,11 +50,12 @@ export const UseWeb3Provider: React.FC<ChildrenShim> = ({ children }) => {
   const [web3State, setWeb3State] = useState<Web3State>(DEFAULT_WEB3_STATE);
 
   useEffect(() => {
-    if (storedProviderMode === "jsonrpc" && storedWallet) {
-      connectJsonRpc(storedWallet);
-    } else {
-      connectMetaMask();
-    }
+    // console.log({ storedProviderMode, storedWallet });
+    // if (storedProviderMode === "jsonrpc" && storedWallet) {
+    // connectJsonRpc(storedWallet);
+    // } else {
+    //   connectMetaMask();
+    // }
   }, []);
 
   async function connectMetaMask() {
@@ -66,8 +67,8 @@ export const UseWeb3Provider: React.FC<ChildrenShim> = ({ children }) => {
         console.log("Connected wallet ", addresses[0]);
         const newWalletAddress = addresses[0];
         const newSigner = newProvider.getSigner(newWalletAddress);
-        setStoredWallet(newWalletAddress);
-        setStoredProviderMode("metamask");
+        // setStoredWallet(newWalletAddress);
+        // setStoredProviderMode("metamask");
         setWeb3State({
           ...web3State,
           connecting: false,
@@ -88,8 +89,8 @@ export const UseWeb3Provider: React.FC<ChildrenShim> = ({ children }) => {
     const newProvider = new ethers.providers.JsonRpcProvider(LOCAL_NODE_ADDRESS);
     await newProvider.send("hardhat_impersonateAccount", [newWalletAddress]);
     const newSigner = newProvider.getSigner(newWalletAddress);
-    setStoredWallet(newWalletAddress);
-    setStoredProviderMode("jsonrpc");
+    // setStoredWallet(newWalletAddress);
+    // setStoredProviderMode("jsonrpc");
     setWeb3State({ ...web3State, connecting: false, providerMode: "jsonrpc", provider: newProvider, walletAddress: newWalletAddress, signer: newSigner });
   }
 
