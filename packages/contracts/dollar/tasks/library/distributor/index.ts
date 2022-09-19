@@ -23,22 +23,18 @@ interface TaskArgs {
 export async function _distributor(taskArgs: TaskArgs, hre: HardhatRuntimeEnvironment) {
   console.log(" getting investors...");
   const investors = await getInvestors(taskArgs.investors); // 1
-  console.log(investors);
 
   console.log(" getting transactionHistories...");
   const transactionHistories = await readContractTransactionHistory(taskArgs.token, vestingRange);
-  console.log(transactionHistories);
 
   const transfersToAnybody = transactionHistories.filter(transferFilter);
   const transfersToInvestorsFilter = transfersToInvestorsFilterWrapper(investors);
 
   console.log(" getting tranches...");
   const tranches = transfersToAnybody.map(transfersToInvestorsFilter).filter(Boolean) as Tranche[];
-  console.log(tranches);
 
   console.log(" getting owed...");
   const owed = await calculateOwedUbqEmissions(investors, tranches, hre);
-  console.log(owed);
 
   console.log(displayInDisperseAppFriendlyFormat(owed).join("\n"));
 

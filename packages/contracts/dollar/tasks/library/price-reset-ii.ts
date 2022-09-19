@@ -9,7 +9,7 @@ import { DEPLOYMENT_OVERRIDES, FORKING_CHAIN_NAME } from "../constants/index";
 import { A_PRECISION, get_burn_lp_amount } from "../utils/curve";
 import pressAnyKey from "../utils/flow";
 
-export const description = "PriceReset can push uAD price lower or higher by burning LP token for uAD or 3CRV from the bonding contract";
+export const description = "Resets the balance of the uAD-3crv metapool to 1.00 (note that 3crv is worth more than $1.00)";
 
 export const params = { price: "The target price of uAD" };
 export const optionalParams = {
@@ -18,7 +18,7 @@ export const optionalParams = {
 
 export const action =
   (): ActionType<any> =>
-  async (taskArgs: { price: number; dryrun: boolean; twapUpdate: boolean }, { ethers, network, getNamedAccounts, deployments }: HardhatRuntimeEnvironment) => {
+  async (taskArgs: { price: number; dryRun: boolean; twapUpdate: boolean }, { ethers, network, deployments }: HardhatRuntimeEnvironment) => {
     console.log("started....");
 
     // All the deployments in hardhat-deploy are stored in deployments directory.
@@ -26,7 +26,7 @@ export const action =
     // In this case, they will be different per chainId. so that would be awesome to have them per chain.
 
     const OVERRIDES_PARAMS = DEPLOYMENT_OVERRIDES[network.name];
-    const { price, dryrun } = taskArgs;
+    const { price, dryRun: dryrun } = taskArgs;
 
     let admin: Signer;
     let adminAdr: string;

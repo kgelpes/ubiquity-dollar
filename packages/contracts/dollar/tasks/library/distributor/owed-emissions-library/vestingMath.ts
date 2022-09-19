@@ -1,10 +1,10 @@
 import { warn } from "../../../../hardhat-config/utils/warn";
 interface VestingMath {
   investorAllocationPercentage: number;
-  totalSupplyCached: number;
+  totalSupply: number;
 }
 
-export function vestingMath({ investorAllocationPercentage, totalSupplyCached }: VestingMath) {
+export function vestingMath({ investorAllocationPercentage, totalSupply }: VestingMath) {
   // below comments written on 7 june 2022
   // investorAllocationPercentage = 0.1
   const may2022 = 1651363200000;
@@ -19,8 +19,9 @@ export function vestingMath({ investorAllocationPercentage, totalSupplyCached }:
     warn(`Vesting completed, capping percentVested to 100%`);
   }
 
-  const shareOfTotalSupply = totalSupplyCached * investorAllocationPercentage;
+  const shareOfTotalSupply = totalSupply * investorAllocationPercentage;
 
   const investorShouldGet = shareOfTotalSupply * percentVested;
+
   return investorShouldGet; // 18,487.0939406307
 }

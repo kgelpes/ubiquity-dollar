@@ -8,7 +8,7 @@ import { _distributor } from "./distributor/";
 
 const ubiquityGovernanceTokenAddress = "0x4e38D89362f7e5db0096CE44ebD021c3962aA9a0";
 
-export const description = "Distributes investor emissions to a list of investors"; // { "percent": number, "address": string, "name": string }[]
+export const description = "Calculates investor emissions for a list of investors"; // { "percent": number, "address": string, "name": string }[]
 export const params = {
   investors: "A path to a json file containing a list of investors",
 };

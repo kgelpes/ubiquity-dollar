@@ -1,5 +1,5 @@
 import { Network } from "hardhat/types";
-import { getAlchemyRpc } from "../../../hardhat.config";
+import { getAlchemyRpc } from "../../../../hardhat-config/utils/getAlchemyRpc";
 
 export async function setBlockHeight(network: Network, blockHeight: number) {
   console.log(`Setting block height to ${blockHeight}...`);

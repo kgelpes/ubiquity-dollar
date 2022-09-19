@@ -4,7 +4,7 @@ import { Investor } from "./investor-types";
 
 export async function loadInvestorsFromJsonFile(pathToJson: string): Promise<Investor[]> {
   try {
-    const importing = await import(pathToJson);
+    const importing = await import(path.resolve(pathToJson));
     const recipients = importing.default;
     return recipients;
   } catch (e) {
