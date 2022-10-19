@@ -1,16 +1,15 @@
 import { OptionDefinition } from "command-line-args";
 
 import { A_PRECISION, deployments, DEPLOYMENT_OVERRIDES, get_burn_lp_amount, Networks, TaskFuncParam, pressAnyKey } from "../../shared";
-import { ethers, BigNumber } from "ethers"
-import { abi as metaPoolABI } from "../../../out/IMetaPool.sol/IMetaPool.json"
-
+import { ethers, BigNumber } from "ethers";
+import { abi as metaPoolABI } from "../../../out/IMetaPool.sol/IMetaPool.json";
 
 export const optionDefinitions: OptionDefinition[] = [
-    { name: 'task', defaultOption: true },
-    { name: 'price', alias: 'p', type: Number },
-    { name: 'dryrun', alias: 'd', type: Boolean },
-    { name: "network", alias: 'n', type: String },
-]
+    { name: "task", defaultOption: true },
+    { name: "price", alias: "p", type: Number },
+    { name: "dryrun", alias: "d", type: Boolean },
+    { name: "network", alias: "n", type: String },
+];
 
 const func = async (params: TaskFuncParam) => {
     const { env, args } = params;
@@ -65,7 +64,6 @@ const func = async (params: TaskFuncParam) => {
 
     console.log(`Calculating burn amount to reset price...`);
 
-
     const amp = metaPoolA.mul(A_PRECISION);
     const base_pool = OVERRIDE_PARAMS.curve3CrvBasePool;
     const curveBasePool = new ethers.Contract(base_pool, metaPoolABI, signer);
@@ -80,8 +78,6 @@ const func = async (params: TaskFuncParam) => {
         totalSupply: totalSupply.toString(),
         amounts: amounts.map((amount) => amount.toString()),
     });
-
-
 
     const burn_lp_amount = get_burn_lp_amount({ amp, virtual_price, fee, balances, totalSupply, amounts });
 
@@ -106,8 +102,6 @@ const func = async (params: TaskFuncParam) => {
         new_balances: new_balances.map((balance) => balance.toString()),
     });
 
-
-
     return "succeeded";
-}
+};
 export default func;

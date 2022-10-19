@@ -71,7 +71,6 @@ contract LiveTestHelper is Test {
 
     ICurveFactory curvePoolFactory =
         ICurveFactory(0x0959158b6040D32d04c301A72CBFD6b39E21c9AE);
-
     address admin = address(0x1);
     address treasury = address(0x3);
     address secondAccount = address(0x4);
@@ -199,8 +198,11 @@ contract LiveTestHelper is Test {
         metapool.transfer(address(bondingV2), 100e18);
         metapool.transfer(secondAccount, 1000e18);
 
-        twapOracle =
-        new TWAPOracle(address(metapool), address(uAD), address(curve3CrvToken));
+        twapOracle = new TWAPOracle(
+            address(metapool),
+            address(uAD),
+            address(curve3CrvToken)
+        );
         manager.setTwapOracleAddress(address(twapOracle));
         uarCalc = new UARForDollarsCalculator(address(manager));
         manager.setUARCalculatorAddress(address(uarCalc));
@@ -211,20 +213,27 @@ contract LiveTestHelper is Test {
         dollarMintCalc = new DollarMintingCalculator(address(manager));
         manager.setDollarMintingCalculatorAddress(address(dollarMintCalc));
 
-        debtCouponMgr =
-            new DebtCouponManager(address(manager), couponLengthBlocks);
+        debtCouponMgr = new DebtCouponManager(
+            address(manager),
+            couponLengthBlocks
+        );
 
-        manager.grantRole(manager.COUPON_MANAGER_ROLE(), address(debtCouponMgr));
+        manager.grantRole(
+            manager.COUPON_MANAGER_ROLE(),
+            address(debtCouponMgr)
+        );
         manager.grantRole(manager.UBQ_MINTER_ROLE(), address(debtCouponMgr));
         manager.grantRole(manager.UBQ_BURNER_ROLE(), address(debtCouponMgr));
 
         uAR = new UbiquityAutoRedeem(address(manager));
         manager.setuARTokenAddress(address(uAR));
 
-        excessDollarsDistributor =
-            new ExcessDollarsDistributor(address(manager));
+        excessDollarsDistributor = new ExcessDollarsDistributor(
+            address(manager)
+        );
         manager.setExcessDollarsDistributor(
-            address(debtCouponMgr), address(excessDollarsDistributor)
+            address(debtCouponMgr),
+            address(excessDollarsDistributor)
         );
 
         address[] memory tos;
@@ -262,13 +271,21 @@ contract LiveTestHelper is Test {
         uint256 dyuAD2LP = metapool.calc_token_amount(amounts_, true);
 
         vm.prank(bondingMinAccount);
-        metapool.add_liquidity(amounts_, dyuAD2LP * 99 / 100, bondingMinAccount);
+        metapool.add_liquidity(
+            amounts_,
+            (dyuAD2LP * 99) / 100,
+            bondingMinAccount
+        );
 
         vm.prank(bondingMaxAccount);
-        metapool.add_liquidity(amounts_, dyuAD2LP * 99 / 100, bondingMaxAccount);
+        metapool.add_liquidity(
+            amounts_,
+            (dyuAD2LP * 99) / 100,
+            bondingMaxAccount
+        );
 
         vm.prank(fourthAccount);
-        metapool.add_liquidity(amounts_, dyuAD2LP * 99 / 100, fourthAccount);
+        metapool.add_liquidity(amounts_, (dyuAD2LP * 99) / 100, fourthAccount);
 
         ///uint256 bondingMinBal = metapool.balanceOf(bondingMinAccount);
         ///uint256 bondingMaxBal = metapool.balanceOf(bondingMaxAccount);
@@ -283,8 +300,13 @@ contract LiveTestHelper is Test {
         migrateLP = [0, 0, 0];
         locked = [uint256(1), uint256(1), uint256(208)];
 
-        bondingV2 =
-        new BondingV2(address(manager), address(bFormulas), migrating, migrateLP, locked);
+        bondingV2 = new BondingV2(
+            address(manager),
+            address(bFormulas),
+            migrating,
+            migrateLP,
+            locked
+        );
 
         //bondingV1.sendDust(address(bondingV2), address(metapool), bondingMinBal + bondingMaxBal);
 

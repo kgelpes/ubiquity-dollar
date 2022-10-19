@@ -58,7 +58,8 @@ contract TheUbiquityStick is
         returns (string memory uri)
     {
         require(_exists(tokenId), "Nonexistent token");
-        return gold[tokenId]
+        return
+            gold[tokenId]
             ? _goldTokenURI
             : (tokenId == INVISIBLE_TOKEN_ID ? _invisibleTokenURI : _tokenURI);
     }

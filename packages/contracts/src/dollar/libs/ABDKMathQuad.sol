@@ -468,20 +468,23 @@ library ABDKMathQuad {
                 }
                 // NaN
                 else {
-                    return negative
+                    return
+                        negative
                         ? bytes8(0xFFF0000000000000) // -Infinity
                         : bytes8(0x7FF0000000000000);
                 } // Infinity
             }
 
             if (exponent > 17406) {
-                return negative
+                return
+                    negative
                     ? bytes8(0xFFF0000000000000) // -Infinity
                     : bytes8(0x7FF0000000000000);
             }
             // Infinity
             else if (exponent < 15309) {
-                return negative
+                return
+                    negative
                     ? bytes8(0x8000000000000000) // -0
                     : bytes8(0x0000000000000000);
             }
@@ -694,7 +697,8 @@ library ABDKMathQuad {
                         }
 
                         if (xExponent == 0x7FFF) {
-                            return xSign
+                            return
+                                xSign
                                 ? _NEGATIVE_INFINITY
                                 : _POSITIVE_INFINITY;
                         } else {
@@ -767,7 +771,8 @@ library ABDKMathQuad {
                         }
 
                         if (xExponent == 0x7FFF) {
-                            return xSign
+                            return
+                                xSign
                                 ? _NEGATIVE_INFINITY
                                 : _POSITIVE_INFINITY;
                         } else {
@@ -870,18 +875,21 @@ library ABDKMathQuad {
 
                 xSignifier *= ySignifier;
                 if (xSignifier == 0) {
-                    return (x ^ y) & 0x80000000000000000000000000000000 > 0
+                    return
+                        (x ^ y) & 0x80000000000000000000000000000000 > 0
                         ? _NEGATIVE_ZERO
                         : _POSITIVE_ZERO;
                 }
 
                 xExponent += yExponent;
 
-                uint256 msb = xSignifier
-                    >= 0x200000000000000000000000000000000000000000000000000000000
+                uint256 msb =
+                    xSignifier
+                        >= 0x200000000000000000000000000000000000000000000000000000000
                     ? 225
-                    : xSignifier
-                        >= 0x100000000000000000000000000000000000000000000000000000000
+                    :
+                        xSignifier
+                            >= 0x100000000000000000000000000000000000000000000000000000000
                         ? 224
                         : mostSignificantBit(xSignifier);
 
@@ -1006,16 +1014,19 @@ library ABDKMathQuad {
 
                 xSignifier = xSignifier / ySignifier;
                 if (xSignifier == 0) {
-                    return (x ^ y) & 0x80000000000000000000000000000000 > 0
+                    return
+                        (x ^ y) & 0x80000000000000000000000000000000 > 0
                         ? _NEGATIVE_ZERO
                         : _POSITIVE_ZERO;
                 }
 
                 assert(xSignifier >= 0x1000000000000000000000000000);
 
-                uint256 msb = xSignifier >= 0x80000000000000000000000000000
+                uint256 msb =
+                    xSignifier >= 0x80000000000000000000000000000
                     ? mostSignificantBit(xSignifier)
-                    : xSignifier >= 0x40000000000000000000000000000
+                    :
+                        xSignifier >= 0x40000000000000000000000000000
                         ? 114
                         : xSignifier >= 0x20000000000000000000000000000 ? 113 : 112;
 
