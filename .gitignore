@@ -46,7 +46,7 @@ typings
 
 ###
 contracts/*/deployments/*
-contracts/out/*
+out/
 !contracts/*/deployments/mainnet
 contracts/dollar/tasks/library/distributor/fixtures/operators.json
 fixtures/abi/types/
