@@ -19,11 +19,16 @@ import ubiquityAlgorithmicDollarFunc, { optionDefinitions as ubiquityAlgorithmDo
 import ubiquityAutoRedeemFunc, { optionDefinitions as ubiquityAutoRedeemOptions } from "./dollar/UbiquityAutoRedeem";
 import ubiquityFormulaFunc, { optionDefinitions as ubiquityFormulaOptions } from "./dollar/UbiquityFormulas";
 import yieldProxyFunc, { optionDefinitions as yieldProxyOptions } from "./dollar/YieldProxy";
-import ubiquiStickFunc, { optionDefinitions as ubiquiStickOptions } from "./ubiquistick/UbiquiStick";
-import ubiquiStickSaleFunc, { optionDefinitions as ubiquiStickSaleOptions } from "./ubiquistick/UbiquiStickSale";
+import ubiquistickFunc, { optionDefinitions as ubiquistickOptions } from "./ubiquistick/ubiquistick";
+import ubiquistickSaleFunc, { optionDefinitions as ubiquistickSaleOptions } from "./ubiquistick/ubiquistickSale";
 import uARFunc, { optionDefinitions as uAROptions } from "./ubiquistick/UAR";
 import lpFunc, { optionDefinitions as lpOptions } from "./ubiquistick/LP";
 import simpleBondFunc, { optionDefinitions as simpleBondOptions } from "./ubiquistick/SimpleBond";
+import diamondCutFacetFunc, { optionDefinitions as diamondCutFacetOptions } from "./diamond/DiamondCutFacet";
+import diamondFunc, { optionDefinitions as diamondOptions } from "./diamond/Diamond";
+import diamondInitFunc, { optionDefinitions as diamondInitOptions } from "./diamond/DiamondInit";
+import diamondLoupeFacetFunc, { optionDefinitions as diamondLoupeFacetOptions } from "./diamond/DiamondLoupeFacet";
+import ownershipFacetFunc, { optionDefinitions as ownershipFacetOptions } from "./diamond/OwnershipFacet";
 
 export const DEPLOY_FUNCS: Record<string, { handler: DeployFuncCallback; options: OptionDefinition[] }> = {
   Bonding: {
@@ -98,13 +103,13 @@ export const DEPLOY_FUNCS: Record<string, { handler: DeployFuncCallback; options
     handler: yieldProxyFunc,
     options: yieldProxyOptions,
   },
-  UbiquiStick: {
-    handler: ubiquiStickFunc,
-    options: ubiquiStickOptions,
+  ubiquistick: {
+    handler: ubiquistickFunc,
+    options: ubiquistickOptions,
   },
-  UbiquiStickSale: {
-    handler: ubiquiStickSaleFunc,
-    options: ubiquiStickSaleOptions,
+  ubiquistickSale: {
+    handler: ubiquistickSaleFunc,
+    options: ubiquistickSaleOptions,
   },
   UAR: {
     handler: uARFunc,
@@ -117,5 +122,25 @@ export const DEPLOY_FUNCS: Record<string, { handler: DeployFuncCallback; options
   SimpleBond: {
     handler: simpleBondFunc,
     options: simpleBondOptions,
+  },
+  diamondCutFacet: {
+    handler: diamondCutFacetFunc,
+    options: diamondCutFacetOptions,
+  },
+  diamond: {
+    handler: diamondFunc,
+    options: diamondOptions,
+  },
+  diamondInit: {
+    handler: diamondInitFunc,
+    options: diamondInitOptions,
+  },
+  diamondLoupeFacet: {
+    handler: diamondLoupeFacetFunc,
+    options: diamondLoupeFacetOptions,
+  },
+  ownershipFacet: {
+    handler: ownershipFacetFunc,
+    options: ownershipFacetOptions,
   },
 };
