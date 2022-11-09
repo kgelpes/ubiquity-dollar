@@ -99,17 +99,17 @@ export const DEPLOY_FUNCS: Record<string, { handler: DeployFuncCallback; options
     handler: ubiquityFormulaFunc,
     options: ubiquityFormulaOptions,
   },
-  YieldProxy: {
+  YielProxy: {
     handler: yieldProxyFunc,
     options: yieldProxyOptions,
   },
-  ubiquistick: {
-    handler: ubiquistickFunc,
-    options: ubiquistickOptions,
+  TheUbiquityStick: {
+    handler: theUbiquityStickFunc,
+    options: theUbiquityStickOptions,
   },
-  ubiquistickSale: {
-    handler: ubiquistickSaleFunc,
-    options: ubiquistickSaleOptions,
+  TheUbiquityStickSale: {
+    handler: theUbiquityStickSaleFunc,
+    options: theUbiquityStickSaleOptions,
   },
   UAR: {
     handler: uARFunc,
@@ -123,23 +123,23 @@ export const DEPLOY_FUNCS: Record<string, { handler: DeployFuncCallback; options
     handler: simpleBondFunc,
     options: simpleBondOptions,
   },
-  diamondCutFacet: {
+  DiamondCutFacet: {
     handler: diamondCutFacetFunc,
     options: diamondCutFacetOptions,
   },
-  diamond: {
+  Diamond: {
     handler: diamondFunc,
     options: diamondOptions,
   },
-  diamondInit: {
+  DiamondInit: {
     handler: diamondInitFunc,
     options: diamondInitOptions,
   },
-  diamondLoupeFacet: {
+  DiamondLoupeFacet: {
     handler: diamondLoupeFacetFunc,
     options: diamondLoupeFacetOptions,
   },
-  ownershipFacet: {
+  OwnershipFacet: {
     handler: ownershipFacetFunc,
     options: ownershipFacetOptions,
   },
