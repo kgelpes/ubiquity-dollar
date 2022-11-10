@@ -19,8 +19,8 @@ import ubiquityAlgorithmicDollarFunc, { optionDefinitions as ubiquityAlgorithmDo
 import ubiquityAutoRedeemFunc, { optionDefinitions as ubiquityAutoRedeemOptions } from "./dollar/UbiquityAutoRedeem";
 import ubiquityFormulaFunc, { optionDefinitions as ubiquityFormulaOptions } from "./dollar/UbiquityFormulas";
 import yieldProxyFunc, { optionDefinitions as yieldProxyOptions } from "./dollar/YieldProxy";
-import ubiquistickFunc, { optionDefinitions as ubiquistickOptions } from "./ubiquistick/ubiquistick";
-import ubiquistickSaleFunc, { optionDefinitions as ubiquistickSaleOptions } from "./ubiquistick/ubiquistickSale";
+import theUbiquityStickFunc, { optionDefinitions as theUbiquityStickOptions } from "./ubiquistick/TheUbiquityStick";
+import theUbiquityStickSaleFunc, { optionDefinitions as theUbiquityStickSaleOptions } from "./ubiquistick/TheUbiquityStickSale";
 import uARFunc, { optionDefinitions as uAROptions } from "./ubiquistick/UAR";
 import lpFunc, { optionDefinitions as lpOptions } from "./ubiquistick/LP";
 import simpleBondFunc, { optionDefinitions as simpleBondOptions } from "./ubiquistick/SimpleBond";
@@ -29,6 +29,7 @@ import diamondFunc, { optionDefinitions as diamondOptions } from "./diamond/Diam
 import diamondInitFunc, { optionDefinitions as diamondInitOptions } from "./diamond/DiamondInit";
 import diamondLoupeFacetFunc, { optionDefinitions as diamondLoupeFacetOptions } from "./diamond/DiamondLoupeFacet";
 import ownershipFacetFunc, { optionDefinitions as ownershipFacetOptions } from "./diamond/OwnershipFacet";
+import managerFacetFunc, { optionDefinitions as managerFacetOptions } from "./diamond/ManagerFacet";
 
 export const DEPLOY_FUNCS: Record<string, { handler: DeployFuncCallback; options: OptionDefinition[] }> = {
   Bonding: {
@@ -142,5 +143,9 @@ export const DEPLOY_FUNCS: Record<string, { handler: DeployFuncCallback; options
   OwnershipFacet: {
     handler: ownershipFacetFunc,
     options: ownershipFacetOptions,
+  },
+  ManagerFacet: {
+    handler: managerFacetFunc,
+    options: managerFacetOptions,
   },
 };
