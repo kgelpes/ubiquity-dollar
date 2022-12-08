@@ -7,6 +7,7 @@ import "../../src/dollar/mocks/MockShareV1.sol";
 import "../../src/dollar/StakingFormulas.sol";
 import "../../src/dollar/StakingShare.sol";
 import "../../src/dollar/interfaces/IMetaPool.sol";
+<<<<<<< HEAD
 import "../../src/dollar/core/UbiquityGovernanceToken.sol";
 import "../../src/dollar/core/UbiquityDollarManager.sol";
 import "../../src/dollar/mocks/MockDollarToken.sol";
@@ -14,6 +15,15 @@ import "../../src/dollar/UbiquityFormulas.sol";
 import "../../src/dollar/core/TWAPOracleDollar3pool.sol";
 import "../../src/dollar/UbiquityChef.sol";
 import "../../src/dollar/core/CreditRedemptionCalculator.sol";
+=======
+import "../../src/dollar/UbiquityGovernance.sol";
+import "../../src/dollar/UbiquityAlgorithmicDollarManager.sol";
+import "../../src/dollar/mocks/MockDollarToken.sol";
+import "../../src/dollar/UbiquityFormulas.sol";
+import "../../src/dollar/TWAPOracleDollar3pool.sol";
+import "../../src/dollar/MasterChefV2.sol";
+import "../../src/dollar/UARForDollarsCalculator.sol";
+>>>>>>> d07f5405 (Updated product names according to previous PR)
 import "../../src/dollar/interfaces/ICurveFactory.sol";
 import "../../src/dollar/interfaces/IMasterChef.sol";
 import "../../src/dollar/core/CreditNFTRedemptionCalculator.sol";
@@ -40,6 +50,7 @@ contract LiveTestHelper is Test {
 
     UbiquityDollarManager manager;
 
+<<<<<<< HEAD
     UbiquityFormulas ubiquityFormulas;
     TWAPOracleDollar3pool twapOracle;
     UbiquityChef ubiquityChef;
@@ -55,6 +66,23 @@ contract LiveTestHelper is Test {
 
     MockDollarToken dollarToken;
     UbiquityGovernanceToken governanceToken;
+=======
+    UbiquityFormulas uFormulas;
+    TWAPOracleDollar3pool twapOracle;
+    MasterChefV2 chefV2;
+    UARForDollarsCalculator uarCalc;
+    CouponsForDollarsCalculator couponCalc;
+    DollarMintingCalculator dollarMintCalc;
+    MockDebtCoupon debtCoupon;
+    DebtCouponManager debtCouponMgr;
+    UbiquityAutoRedeem uAR;
+    ExcessDollarsDistributor excessDollarsDistributor;
+    SushiSwapPool sushiUGOVPool;
+    IMetaPool metapool;
+
+    MockDollarToken uAD;
+    UbiquityGovernance uGov;
+>>>>>>> d07f5405 (Updated product names according to previous PR)
 
     BondingShare stakingShareV1;
 
@@ -110,8 +138,13 @@ contract LiveTestHelper is Test {
         manager.grantRole(manager.GOVERNANCE_TOKEN_MINTER_ROLE(), address(stakingV1));
         manager.grantRole(manager.GOVERNANCE_TOKEN_MINTER_ROLE(), address(stakingShareV1));
 
+<<<<<<< HEAD
         dollarToken = new MockDollarToken(10000);
         manager.setDollarTokenAddress(address(dollarToken));
+=======
+        uAD = new MockDollarToken(10000);
+        manager.setDollarTokenAddress(address(uAD));
+>>>>>>> d07f5405 (Updated product names according to previous PR)
 
         creditNFT = new MockCreditNFT(100);
         manager.setCreditNFTAddress(address(creditNFT));
@@ -199,8 +232,16 @@ contract LiveTestHelper is Test {
         metapool.transfer(address(staking), 100e18);
         metapool.transfer(secondAccount, 1000e18);
 
+<<<<<<< HEAD
         twapOracle =
         new TWAPOracleDollar3pool(address(metapool), address(dollarToken), address(curve3CrvToken));
+=======
+        twapOracle = new TWAPOracleDollar3pool(
+            address(metapool),
+            address(uAD),
+            address(curve3CrvToken)
+        );
+>>>>>>> d07f5405 (Updated product names according to previous PR)
         manager.setTwapOracleAddress(address(twapOracle));
         creditRedemptionCalc = new CreditRedemptionCalculator(address(manager));
         manager.setCreditCalculatorAddress(address(creditRedemptionCalc));
@@ -211,20 +252,43 @@ contract LiveTestHelper is Test {
         dollarMintCalc = new DollarMintCalculator(address(manager));
         manager.setDollarMintCalculatorAddress(address(dollarMintCalc));
 
+<<<<<<< HEAD
         creditNFTManager =
             new CreditNFTManager(address(manager), creditNFTLengthBlocks);
 
         manager.grantRole(manager.CREDIT_NFT_MANAGER_ROLE(), address(creditNFTManager));
         manager.grantRole(manager.GOVERNANCE_TOKEN_MINTER_ROLE(), address(creditNFTManager));
         manager.grantRole(manager.GOVERNANCE_TOKEN_BURNER_ROLE(), address(creditNFTManager));
+=======
+        debtCouponMgr = new DebtCouponManager(
+            address(manager),
+            couponLengthBlocks
+        );
+
+        manager.grantRole(
+            manager.COUPON_MANAGER_ROLE(),
+            address(debtCouponMgr)
+        );
+        manager.grantRole(manager.UBQ_MINTER_ROLE(), address(debtCouponMgr));
+        manager.grantRole(manager.UBQ_BURNER_ROLE(), address(debtCouponMgr));
+>>>>>>> d07f5405 (Updated product names according to previous PR)
 
         creditToken = new UbiquityCreditToken(address(manager));
         manager.setCreditTokenAddress(address(creditToken));
 
+<<<<<<< HEAD
         dollarMintExcess =
             new DollarMintExcess(address(manager));
         manager.setExcessDollarsDistributor(
             address(creditNFTManager), address(dollarMintExcess)
+=======
+        excessDollarsDistributor = new ExcessDollarsDistributor(
+            address(manager)
+        );
+        manager.setExcessDollarsDistributor(
+            address(debtCouponMgr),
+            address(excessDollarsDistributor)
+>>>>>>> d07f5405 (Updated product names according to previous PR)
         );
 
         address[] memory tos;
@@ -261,14 +325,30 @@ contract LiveTestHelper is Test {
 
         uint256 dyuAD2LP = metapool.calc_token_amount(amounts_, true);
 
+<<<<<<< HEAD
         vm.prank(stakingMinAccount);
         metapool.add_liquidity(amounts_, dyuAD2LP * 99 / 100, stakingMinAccount);
 
         vm.prank(stakingMaxAccount);
         metapool.add_liquidity(amounts_, dyuAD2LP * 99 / 100, stakingMaxAccount);
+=======
+        vm.prank(bondingMinAccount);
+        metapool.add_liquidity(
+            amounts_,
+            (dyuAD2LP * 99) / 100,
+            bondingMinAccount
+        );
+
+        vm.prank(bondingMaxAccount);
+        metapool.add_liquidity(
+            amounts_,
+            (dyuAD2LP * 99) / 100,
+            bondingMaxAccount
+        );
+>>>>>>> d07f5405 (Updated product names according to previous PR)
 
         vm.prank(fourthAccount);
-        metapool.add_liquidity(amounts_, dyuAD2LP * 99 / 100, fourthAccount);
+        metapool.add_liquidity(amounts_, (dyuAD2LP * 99) / 100, fourthAccount);
 
         ///uint256 bondingMinBal = metapool.balanceOf(stakingMinAccount);
         ///uint256 bondingMaxBal = metapool.balanceOf(stakingMaxAccount);
@@ -283,8 +363,18 @@ contract LiveTestHelper is Test {
         migrateLP = [0, 0, 0];
         locked = [uint256(1), uint256(1), uint256(208)];
 
+<<<<<<< HEAD
         staking =
         new Staking(address(manager), address(stakingFormulas), migrating, migrateLP, locked);
+=======
+        bondingV2 = new BondingV2(
+            address(manager),
+            address(bFormulas),
+            migrating,
+            migrateLP,
+            locked
+        );
+>>>>>>> d07f5405 (Updated product names according to previous PR)
 
         //bondingV1.sendDust(address(bondingV2), address(metapool), bondingMinBal + bondingMaxBal);
 

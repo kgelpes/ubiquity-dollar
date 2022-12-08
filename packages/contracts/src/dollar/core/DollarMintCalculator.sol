@@ -2,10 +2,15 @@
 pragma solidity ^0.8.3;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+<<<<<<< HEAD:packages/contracts/src/dollar/core/DollarMintCalculator.sol
 import "../interfaces/IDollarMintCalculator.sol";
 import "../libs/ABDKMathQuad.sol";
 import "./TWAPOracleDollar3pool.sol";
 import "./UbiquityDollarManager.sol";
+=======
+import "./TWAPOracleDollar3pool.sol";
+import "./libs/ABDKMathQuad.sol";
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/src/dollar/DollarMintingCalculator.sol
 
 /// @title Calculates amount of dollars ready to be minted when twapPrice > 1
 contract DollarMintCalculator is IDollarMintCalculator {
@@ -22,6 +27,7 @@ contract DollarMintCalculator is IDollarMintCalculator {
 
     /// @notice returns (TWAP_PRICE  -1) * Ubiquity_Dollar_Total_Supply
     function getDollarsToMint() external view override returns (uint256) {
+<<<<<<< HEAD:packages/contracts/src/dollar/core/DollarMintCalculator.sol
         TWAPOracleDollar3pool oracle = TWAPOracleDollar3pool(manager.twapOracleAddress());
         uint256 twapPrice = oracle.consult(manager.dollarTokenAddress());
         require(twapPrice > 1 ether, "DollarMintCalculator: not > 1");
@@ -31,5 +37,25 @@ contract DollarMintCalculator is IDollarMintCalculator {
                     .div(_one)
             )
         ).toUInt();
+=======
+        TWAPOracleDollar3pool oracle = TWAPOracleDollar3pool(
+            manager.twapOracleAddress()
+        );
+        uint256 twapPrice = oracle.consult(manager.dollarTokenAddress());
+        require(twapPrice > 1 ether, "DollarMintingCalculator: not > 1");
+        return
+            twapPrice
+                .fromUInt()
+                .sub(_one)
+                .mul(
+                    (
+                        IERC20(manager.dollarTokenAddress())
+                            .totalSupply()
+                            .fromUInt()
+                            .div(_one)
+                    )
+                )
+                .toUInt();
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/src/dollar/DollarMintingCalculator.sol
     }
 }

@@ -1,15 +1,21 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.3;
 
-import {IUniswapV2Router01} from
-    "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router01.sol";
+import {IUniswapV2Router01} from "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router01.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+<<<<<<< HEAD:packages/contracts/test/dollar/core/DollarMintExcess.t.sol
 import {UbiquityDollarManager} from
     "../../../src/dollar/core/UbiquityDollarManager.sol";
 import {TWAPOracleDollar3pool} from "../../../src/dollar/core/TWAPOracleDollar3pool.sol";
 import {DollarMintExcess} from
     "../../../src/dollar/core/DollarMintExcess.sol";
 import {IMetaPool} from "../../../src/dollar/interfaces/IMetaPool.sol";
+=======
+import {UbiquityAlgorithmicDollarManager} from "../../src/dollar/UbiquityAlgorithmicDollarManager.sol";
+import {TWAPOracleDollar3pool} from "../../src/dollar/TWAPOracleDollar3pool.sol";
+import {ExcessDollarsDistributor} from "../../src/dollar/ExcessDollarsDistributor.sol";
+import {IMetaPool} from "../../src/dollar/interfaces/IMetaPool.sol";
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/test/dollar/ExcessDollarsDistributor.t.sol
 
 import "../../helpers/LocalTestHelper.sol";
 
@@ -27,8 +33,14 @@ contract DollarMintExcessTest is LocalTestHelper {
             .twapOracleAddress();
         dollarAddress = UbiquityDollarManager(dollarManagerAddress)
             .dollarTokenAddress();
+<<<<<<< HEAD:packages/contracts/test/dollar/core/DollarMintExcess.t.sol
         excessDollarsDistributorAddress =
             address(new DollarMintExcess(dollarManagerAddress));
+=======
+        excessDollarsDistributorAddress = address(
+            new ExcessDollarsDistributor(uADManagerAddress)
+        );
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/test/dollar/ExcessDollarsDistributor.t.sol
     }
 
     function mockSushiSwapRouter(uint256 _expected_swap_amount) public {
@@ -101,16 +113,34 @@ contract DollarMintExcessTest is LocalTestHelper {
         mockSushiSwapRouter(10e18);
         mockMetaPool(address(0x55555), 10e18, 10e18);
         mockManagerAddresses(address(0x123), address(0x456));
+<<<<<<< HEAD:packages/contracts/test/dollar/core/DollarMintExcess.t.sol
         MockDollarToken(dollarAddress).mint(excessDollarsDistributorAddress, 200e18);
 
         // 10% should be transferred to the treasury address
         uint256 _before_treasury_bal =
             MockDollarToken(dollarAddress).balanceOf(treasuryAddress);
+=======
+        MockDollarToken(uADAddress).mint(
+            excessDollarsDistributorAddress,
+            200e18
+        );
+
+        // 10% should be transferred to the treasury address
+        uint256 _before_treasury_bal = MockDollarToken(uADAddress).balanceOf(
+            treasuryAddress
+        );
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/test/dollar/ExcessDollarsDistributor.t.sol
 
         DollarMintExcess(excessDollarsDistributorAddress)
             .distributeDollars();
+<<<<<<< HEAD:packages/contracts/test/dollar/core/DollarMintExcess.t.sol
         uint256 _after_treasury_bal =
             MockDollarToken(dollarAddress).balanceOf(treasuryAddress);
+=======
+        uint256 _after_treasury_bal = MockDollarToken(uADAddress).balanceOf(
+            treasuryAddress
+        );
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/test/dollar/ExcessDollarsDistributor.t.sol
         assertEq(_after_treasury_bal - _before_treasury_bal, 20e18);
     }
 }

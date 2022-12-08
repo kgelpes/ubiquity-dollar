@@ -96,8 +96,14 @@ contract UbiquityDollarManager is AccessControl {
         external
         onlyAdmin
     {
+<<<<<<< HEAD:packages/contracts/src/dollar/core/UbiquityDollarManager.sol
         IUbiquityDollarToken(dollarTokenAddress).setIncentiveContract(
             _account, _incentiveAddress
+=======
+        IUbiquityAlgorithmicDollar(dollarTokenAddress).setIncentiveContract(
+            _account,
+            _incentiveAddress
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/src/dollar/UbiquityAlgorithmicDollarManager.sol
         );
     }
 
@@ -146,8 +152,14 @@ contract UbiquityDollarManager is AccessControl {
         address creditNFTManagerAddress,
         address dollarMintExcess
     ) external onlyAdmin {
+<<<<<<< HEAD:packages/contracts/src/dollar/core/UbiquityDollarManager.sol
         _excessDollarDistributors[creditNFTManagerAddress] =
             dollarMintExcess;
+=======
+        _excessDollarDistributors[
+            debtCouponManagerAddress
+        ] = excessCouponDistributor;
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/src/dollar/UbiquityAlgorithmicDollarManager.sol
     }
 
     function setMasterChefAddress(address _masterChefAddress)
@@ -227,23 +239,41 @@ contract UbiquityDollarManager is AccessControl {
         stableSwapMetaPoolAddress = metaPool;
 
         // Approve the newly-deployed meta pool to transfer this contract's funds
+<<<<<<< HEAD:packages/contracts/src/dollar/core/UbiquityDollarManager.sol
         uint256 crv3PoolTokenAmount =
             IERC20(_crv3PoolTokenAddress).balanceOf(address(this));
         uint256 dollarTokenAmount =
             IERC20(dollarTokenAddress).balanceOf(address(this));
+=======
+        uint256 crv3PoolTokenAmount = IERC20(_crv3PoolTokenAddress).balanceOf(
+            address(this)
+        );
+        uint256 uADTokenAmount = IERC20(dollarTokenAddress).balanceOf(
+            address(this)
+        );
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/src/dollar/UbiquityAlgorithmicDollarManager.sol
 
         // safe approve revert if approve from non-zero to non-zero allowance
         IERC20(_crv3PoolTokenAddress).safeApprove(metaPool, 0);
-        IERC20(_crv3PoolTokenAddress).safeApprove(metaPool, crv3PoolTokenAmount);
+        IERC20(_crv3PoolTokenAddress).safeApprove(
+            metaPool,
+            crv3PoolTokenAmount
+        );
 
         IERC20(dollarTokenAddress).safeApprove(metaPool, 0);
         IERC20(dollarTokenAddress).safeApprove(metaPool, dollarTokenAmount);
 
         // coin at index 0 is Ubiquity Dollar and index 1 is 3CRV
         require(
+<<<<<<< HEAD:packages/contracts/src/dollar/core/UbiquityDollarManager.sol
             IMetaPool(metaPool).coins(0) == dollarTokenAddress
                 && IMetaPool(metaPool).coins(1) == _crv3PoolTokenAddress,
             "MGR: COIN_ORDER_MISMATCH"
+=======
+            IMetaPool(metaPool).coins(0) == dollarTokenAddress &&
+                IMetaPool(metaPool).coins(1) == _crv3PoolTokenAddress,
+            "uADMGR: COIN_ORDER_MISMATCH"
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/src/dollar/UbiquityAlgorithmicDollarManager.sol
         );
         // Add the initial liquidity to the StableSwap meta pool
         uint256[2] memory amounts = [

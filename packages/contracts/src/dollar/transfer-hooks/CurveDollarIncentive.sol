@@ -1,12 +1,21 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.3;
 
+<<<<<<< HEAD:packages/contracts/src/dollar/transfer-hooks/CurveDollarIncentive.sol
 import "../core/TWAPOracleDollar3pool.sol";
 import "../core/UbiquityDollarManager.sol";
 import "../core/UbiquityDollarToken.sol";
 import "../interfaces/IUbiquityGovernance.sol";
 import "../interfaces/IIncentive.sol";
 import "../libs/ABDKMathQuad.sol";
+=======
+import "./UbiquityAlgorithmicDollarManager.sol";
+import "./interfaces/IUbiquityGovernance.sol";
+import "./interfaces/IIncentive.sol";
+import "./TWAPOracleDollar3pool.sol";
+import "./UbiquityAlgorithmicDollar.sol";
+import "./libs/ABDKMathQuad.sol";
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/src/dollar/CurveUADIncentive.sol
 
 /// @title Curve trading incentive contract
 /// @author Ubiquity DAO
@@ -115,8 +124,14 @@ contract CurveDollarIncentive is IIncentive {
                     .balanceOf(target) >= penalty + amount,
                 "Dollar: balance too low to get penalized"
             );
+<<<<<<< HEAD:packages/contracts/src/dollar/transfer-hooks/CurveDollarIncentive.sol
             UbiquityDollarToken(manager.dollarTokenAddress()).burnFrom(
                 target, penalty
+=======
+            UbiquityAlgorithmicDollar(manager.dollarTokenAddress()).burnFrom(
+                target,
+                penalty
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/src/dollar/CurveUADIncentive.sol
             ); // burn from the recipient
         }
     }
@@ -134,9 +149,16 @@ contract CurveDollarIncentive is IIncentive {
             E.g. Ubiquity Dollar = 0.8, you buy 1000 Ubiquity Dollar, you get (1-0.8)*1000 = 200 Governance Token */
 
         if (incentive != 0) {
+<<<<<<< HEAD:packages/contracts/src/dollar/transfer-hooks/CurveDollarIncentive.sol
             // this means CurveIncentive should be a minter of Governance Token
             IUbiquityGovernanceToken(manager.governanceTokenAddress()).mint(
                 target, incentive
+=======
+            // this means CurveIncentive should be a minter of UGOV
+            IUbiquityGovernance(manager.governanceTokenAddress()).mint(
+                target,
+                incentive
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/src/dollar/CurveUADIncentive.sol
             );
         }
     }
@@ -153,9 +175,10 @@ contract CurveDollarIncentive is IIncentive {
             return 0;
         }
 
-        uint256 res = _one.sub(curPrice.fromUInt()).mul(
-            (amount.fromUInt().div(_one))
-        ).toUInt();
+        uint256 res = _one
+            .sub(curPrice.fromUInt())
+            .mul((amount.fromUInt().div(_one)))
+            .toUInt();
         // returns (1- TWAP_Price) * amount.
         return res;
     }
@@ -165,8 +188,15 @@ contract CurveDollarIncentive is IIncentive {
     }
 
     function _getTWAPPrice() internal view returns (uint256) {
+<<<<<<< HEAD:packages/contracts/src/dollar/transfer-hooks/CurveDollarIncentive.sol
         return TWAPOracleDollar3pool(manager.twapOracleAddress()).consult(
             manager.dollarTokenAddress()
         );
+=======
+        return
+            TWAPOracleDollar3pool(manager.twapOracleAddress()).consult(
+                manager.dollarTokenAddress()
+            );
+>>>>>>> d07f5405 (Updated product names according to previous PR):packages/contracts/src/dollar/CurveUADIncentive.sol
     }
 }
