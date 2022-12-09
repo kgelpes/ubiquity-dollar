@@ -7,7 +7,6 @@
     "ABDK",
     "IERC",
     "ITWAP",
-    "IUAR",
     "tippyjs",
     "ALUSD",
     "jsbi",
@@ -30,10 +29,6 @@
     "reedem",
     "retdata",
     "ntype",
-    "zapaz",
-    "Qmanager",
-    "IUBQ",
-    "ADMGR",
     "coef",
     "structs",
     "tlsv"
@@ -53,10 +48,16 @@
     "**/node_modules/**"
   ],
   "words": [
+    "\"uCR\"",
     "!UbiquityStick",
     "!uAD",
     "!uCR",
     "!UBQ",
+    "!uGOV",
+    "!UBOND",
+    "!ubiquiti",
+    "ubiquistick",
+
     "Arrakis",
     "Chainlink",
     "DOLA",
@@ -70,9 +71,7 @@
     "stablecoins",
     "twap",
     "typechain",
-    "UbiquiStick",
-    "UbiquiSticks",
-    "ubiquitydao",
+    "Ubiqui",
     "solhint",
     "bytecode",
     "Bytecode",
@@ -81,9 +80,6 @@
     "Pausable",
     "masterchef",
     "struct",
-    "!uGOV",
-    "!UBOND",
-    "Gelato",
     "ethersproject",
     "Mintable",
     "svgs",
@@ -106,7 +102,6 @@
     "Reentrancy",
     "uncollateralized",
     "alloc",
-    "!ubiquiti",
     "buildhome"
   ]
 }

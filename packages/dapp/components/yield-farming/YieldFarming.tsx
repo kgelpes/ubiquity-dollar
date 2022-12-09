@@ -16,7 +16,7 @@ import Tooltip from "../ui/Tooltip";
 import WalletNotConnected from "../ui/WalletNotConnected";
 import { ButtonLink } from "@/components/ui/Button";
 
-type Balance = { usdc: number; ubq: number; uad: number };
+type Balance = { usdc: number; governance: number; dollar: number };
 
 type Actions = {
   onDeposit: (payload: Balance) => void;
@@ -43,7 +43,7 @@ export const YieldFarmingContainer = ({ managedContracts, namedContracts: contra
   }, []);
 
   const actions: Actions = {
-    onDeposit: async ({ usdc, ubq, uad }) => {
+    onDeposit: async ({ usdc, governance: ubq, dollar: uad }) => {
       doTransaction("Depositing...", async () => {
         const bigUsdc = ethers.utils.parseUnits(String(usdc), 6);
         const bigUbq = ethers.utils.parseUnits(String(ubq), 18);
@@ -73,8 +73,8 @@ export const YieldFarmingContainer = ({ managedContracts, namedContracts: contra
 
   const parsedBalances = balances && {
     usdc: +ethers.utils.formatUnits(balances.usdc, 6),
-    ubq: +ethers.utils.formatEther(balances.ubq),
-    uad: +ethers.utils.formatEther(balances.uad),
+    governance: +ethers.utils.formatEther(balances.governance),
+    dollar: +ethers.utils.formatEther(balances.dollar),
   };
 
   return (
@@ -124,12 +124,12 @@ export const YieldFarmingSubContainer = ({ actions, yieldProxyData, depositInfo,
             newAmount={fm(depositInfo.newAmount, yieldProxyData.decimals)}
             yieldPct={depositInfo.currentYieldPct}
             yieldAmount={fm(depositInfo.jarYieldAmount)}
-            uad={fm(depositInfo.uad)}
+            uad={fm(depositInfo.dollarToken)}
             uadMax={yieldProxyData.bonusYieldUadMaxPct * +fm(depositInfo.amount, yieldProxyData.decimals)}
             uadBasePct={yieldProxyData.bonusYieldBasePct}
             uadBonusPct={depositInfo.bonusYieldExtraPct}
             uadBonusAmount={fm(depositInfo.bonusYieldAmount)}
-            ubq={fm(depositInfo.ubq)}
+            ubq={fm(depositInfo.governanceToken)}
             ubqMax={fm(yieldProxyData.depositFeeUbqMax)}
             feePct={depositInfo.feePct}
             feePctMax={yieldProxyData.depositFeeBasePct}
@@ -296,7 +296,7 @@ export const YieldFarmingDeposit = memo(
 
     const deposit: () => void = () => {
       if (usdc && ubq && uad) {
-        onDeposit({ usdc: parseFloat(usdc), ubq: parseFloat(ubq), uad: parseFloat(uad) });
+        onDeposit({ usdc: parseFloat(usdc), governance: parseFloat(ubq), dollar: parseFloat(uad) });
       }
     };
 
@@ -316,7 +316,7 @@ export const YieldFarmingDeposit = memo(
     };
 
     const canDeposit: () => boolean = () => {
-      if (usdcNum > 0 && usdcNum <= balance.usdc && ubqNum >= 0 && ubqNum <= balance.ubq && uadNum >= 0 && uadNum <= balance.uad) {
+      if (usdcNum > 0 && usdcNum <= balance.usdc && ubqNum >= 0 && ubqNum <= balance.governance && uadNum >= 0 && uadNum <= balance.dollarToken) {
         return true;
       }
       return false;
@@ -336,14 +336,14 @@ export const YieldFarmingDeposit = memo(
     };
 
     const setMaxUbq = () => {
-      const max = maxUbqAmount > balance.ubq ? balance.ubq : maxUbqAmount;
+      const max = maxUbqAmount > balance.governance ? balance.governance : maxUbqAmount;
       setUbq(max.toString());
     };
 
     const setMaxUad = () => {
       let max = maxUadPct * usdcNum;
-      if (max > balance.uad) {
-        max = balance.uad;
+      if (max > balance.dollarToken) {
+        max = balance.dollar;
       }
       setUad(max.toString());
     };
@@ -356,8 +356,8 @@ export const YieldFarmingDeposit = memo(
       const errors: string[] = [];
       const noFunds = (token: string) => `You don't have enough ${token.toUpperCase()}.`;
       if (usdcNum > balance.usdc) errors.push(noFunds("usdc"));
-      if (ubqNum > balance.ubq) errors.push(noFunds("ubq"));
-      if (uadNum > balance.uad) errors.push(noFunds("uad"));
+      if (ubqNum > balance.governanceToken) errors.push(noFunds("ubq"));
+      if (uadNum > balance.dollarToken) errors.push(noFunds("uad"));
 
       setErrors(errors);
     }, [usdc, ubq, uad]);
@@ -422,7 +422,7 @@ export const YieldFarmingDeposit = memo(
                 <span>FEE</span>
               </div>
             </div>
-            <div>Balance: {f(balance.ubq)}</div>
+            <div>Balance: {f(balance.governanceToken)}</div>
           </div>
 
           <div>
@@ -452,7 +452,7 @@ export const YieldFarmingDeposit = memo(
                 <span>BOOST</span>
               </div>
             </div>
-            <div>Balance: {f(balance.uad)}</div>
+            <div>Balance: {f(balance.dollarToken)}</div>
           </div>
         </div>
 

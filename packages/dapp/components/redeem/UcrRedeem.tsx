@@ -62,13 +62,13 @@ const UcrRedeem = ({ twapInteger }: { twapInteger: number }) => {
 
   const extractValidAmount = (val: string = inputVal): null | BigNumber => {
     const amount = safeParseEther(val);
-    return amount && amount.gt(BigNumber.from(0)) && amount.lte(balances.ucr) ? amount : null;
+    return amount && amount.gt(BigNumber.from(0)) && amount.lte(balances.credit) ? amount : null;
   };
 
   const submitEnabled = !!(extractValidAmount() && !doingTransaction);
 
   const handleMax = () => {
-    const creditTokenValue = ethers.utils.formatEther(balances.ucr);
+    const creditTokenValue = ethers.utils.formatEther(balances.credit);
     setInputVal(parseInt(creditTokenValue).toString());
   };
 

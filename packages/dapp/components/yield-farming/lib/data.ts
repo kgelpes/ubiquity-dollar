@@ -19,26 +19,26 @@ export type YieldProxyData = {
   depositFeeMax: BigNumber;
   depositFeeBase: BigNumber; // depositFee % = depositFeeBase / depositFeeMax
   depositFeeBasePct: number; // depositFeeBase / depositFeeMax
-  depositFeeUbqMax: BigNumber; // If UBQ = this => depositFee = 0%
+  depositFeeUbqMax: BigNumber; // If Governance = this => depositFee = 0%
   bonusYieldMax: BigNumber;
   bonusYieldBase: BigNumber; // bonusYield % = bonusYieldBase / bonusYieldMax
   bonusYieldBasePct: number; // bonusYieldBase / bonusYieldMax
   bonusYieldMaxPct: number; // bonusYieldBase / bonusYieldMax
-  bonusYieldUadMaxPct: number; // Hardcoded at 0.5 of main amount // If uAD = this => bonusYield = bonusYieldMax
+  bonusYieldUadMaxPct: number; // Hardcoded at 0.5 of main amount // If Dollar = this => bonusYield = bonusYieldMax
   jarRatio: BigNumber;
 };
 
 export async function loadYieldProxyData(contracts: YieldProxyContracts): Promise<YieldProxyData> {
-  const [bonusYieldBase, bonusYieldMax, depositFeeBase, depositFeeMax, ubqRate, ubqRateMax] = await Promise.all([
+  const [bonusYieldBase, bonusYieldMax, depositFeeBase, depositFeeMax, governanceTokenRate, ubqRateMax] = await Promise.all([
     contracts.yieldProxy.bonusYield(),
     contracts.yieldProxy.BONUS_YIELD_MAX(),
     contracts.yieldProxy.fees(),
     contracts.yieldProxy.FEES_MAX(),
-    contracts.yieldProxy.ubqRate(),
-    contracts.yieldProxy.UBQ_RATE_MAX(),
+    contracts.yieldProxy.governanceTokenRate(),
+    contracts.yieldProxy.GOVERNANCE_TOKEN_RATE_MAX(),
   ]);
 
-  const depositFeeUbqMax = ethers.utils.parseEther("100").mul(ubqRateMax).div(ubqRate);
+  const depositFeeUbqMax = ethers.utils.parseEther("100").mul(ubqRateMax).div(governanceTokenRate);
 
   const jarRatio = await contracts.jarUsdc.getRatio();
 
@@ -61,9 +61,9 @@ export async function loadYieldProxyData(contracts: YieldProxyContracts): Promis
   if (debug) {
     console.log(`YieldProxy ${di.token.toUpperCase()} (${di.decimals} decimals)`);
     console.log(`  .depositFeeBasePct: ${di.depositFeeBasePct * 100}%`);
-    console.log(`  .depositFeeUbqMax: if UBQ = ${ethers.utils.formatEther(di.depositFeeUbqMax)} => fee = 0%`);
+    console.log(`  .depositFeeUbqMax: if Governance = ${ethers.utils.formatEther(di.depositFeeUbqMax)} => fee = 0%`);
     console.log(`  .bonusYieldBasePct: ${di.bonusYieldBasePct * 100}%`);
-    console.log(`  .bonusYieldUadMaxPct: if uAD = ${di.bonusYieldUadMaxPct * 100}% of ${di.token.toUpperCase()} amount => bonusYield = 100%`);
+    console.log(`  .bonusYieldUadMaxPct: if Dollar = ${di.bonusYieldUadMaxPct * 100}% of ${di.token.toUpperCase()} amount => bonusYield = 100%`);
     console.log(`  .jarRatio ${ethers.utils.formatEther(jarRatio)}`);
     if (isDev) {
       console.log(`  .jarRatio (SIMULATED) ${ethers.utils.formatEther(di.jarRatio)}`);
@@ -74,8 +74,8 @@ export async function loadYieldProxyData(contracts: YieldProxyContracts): Promis
 
 export type YieldProxyDepositInfo = {
   amount: BigNumber;
-  uad: BigNumber;
-  ubq: BigNumber;
+  dollarToken: BigNumber;
+  governanceToken: BigNumber;
   jarYieldAmount: BigNumber;
   bonusYieldExtraPct: number;
   bonusYieldTotalPct: number;
@@ -108,8 +108,8 @@ export async function loadYieldProxyDepositInfo(yp: YieldProxyData, contracts: Y
   const depositInfo: YieldProxyDepositInfo = {
     amount: di.amount,
     newAmount: di.amount.sub(di.fee),
-    uad: di.uadAmount,
-    ubq: di.ubqAmount,
+    dollarToken: di.uadAmount,
+    governanceToken: di.ubqAmount,
     jarYieldAmount,
     bonusYieldExtraPct: toEtherNum(di.bonusYield) / toEtherNum(yp.bonusYieldMax) - yp.bonusYieldBasePct,
     bonusYieldTotalPct: toEtherNum(di.bonusYield) / toEtherNum(yp.bonusYieldMax),
@@ -124,8 +124,8 @@ export async function loadYieldProxyDepositInfo(yp: YieldProxyData, contracts: Y
     console.log(`YieldProxyDeposit ${yp.token.toUpperCase()} (${yp.decimals} decimals)`);
     console.log(`  .amount: `, ethers.utils.formatUnits(depositInfo.amount, yp.decimals));
     console.log(`  .newAmount:`, ethers.utils.formatUnits(depositInfo.newAmount, yp.decimals));
-    console.log("  .uad:", ethers.utils.formatEther(depositInfo.uad));
-    console.log("  .ubq:", ethers.utils.formatEther(depositInfo.ubq));
+    console.log("  .dollarToken:", ethers.utils.formatEther(depositInfo.dollarToken));
+    console.log("  .governanceToken:", ethers.utils.formatEther(depositInfo.governanceToken));
     console.log("  .jarYieldAmount:", ethers.utils.formatEther(jarYieldAmount));
     console.log("  .bonusYieldAmount:", ethers.utils.formatEther(bonusYieldAmount));
     console.log("  .feeAmount:", ethers.utils.formatEther(depositInfo.feeAmount));

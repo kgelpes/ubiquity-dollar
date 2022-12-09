@@ -6,7 +6,7 @@ import {
   getERC20Contract,
   getICouponsForDollarsCalculatorContract,
   getIMetaPoolContract,
-  getIUARForDollarsCalculatorContract,
+  getICreditForDollarsCalculatorContract,
   getMasterChefV2Contract,
   getSushiSwapPoolContract,
   getTWAPOracleContract,
@@ -96,7 +96,7 @@ async function connectManagerContracts(manager: Contract, provider: NonNullable<
     governanceMarket: ugovUadPairContract,
     ubiquityFormulas: getUbiquityFormulasContract(ubiquityFormulas, provider),
     creditNftCalculator: getICouponsForDollarsCalculatorContract(creditNftCalculator, provider),
-    creditCalculator: getIUARForDollarsCalculatorContract(creditCalculator, provider),
+    creditCalculator: getICreditForDollarsCalculatorContract(creditCalculator, provider),
   };
 }
 

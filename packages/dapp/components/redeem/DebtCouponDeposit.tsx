@@ -60,7 +60,7 @@ const UcrNftGenerator = () => {
 
   const extractValidAmount = (val: string = inputVal): null | BigNumber => {
     const amount = safeParseEther(val);
-    return amount && amount.gt(BigNumber.from(0)) && amount.lte(balances.uad) ? amount : null;
+    return amount && amount.gt(BigNumber.from(0)) && amount.lte(balances.dollar) ? amount : null;
   };
 
   const submitEnabled = !!(extractValidAmount() && !doingTransaction);

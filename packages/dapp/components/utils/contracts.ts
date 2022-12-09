@@ -24,7 +24,7 @@ import DebtCoupon from "@ubiquity/contracts/out/CreditNFT.sol/CreditNFT.json";
 import DollarMintingCalculator from "@ubiquity/contracts/out/DollarMintCalculator.sol/DollarMintCalculator.json";
 import ICouponsForDollarsCalculator from "@ubiquity/contracts/out/ICreditNFTRedemptionCalculator.sol/ICreditNFTRedemptionCalculator.json";
 import IMetaPool from "@ubiquity/contracts/out/IMetaPool.sol/IMetaPool.json";
-import IUARForDollarsCalculator from "@ubiquity/contracts/out/ICreditRedemptionCalculator.sol/ICreditRedemptionCalculator.json";
+import ICreditForDollarsCalculator from "@ubiquity/contracts/out/ICreditRedemptionCalculator.sol/ICreditRedemptionCalculator.json";
 import MasterChefV2 from "@ubiquity/contracts/out/UbiquityChef.sol/UbiquityChef.json";
 import SushiSwapPool from "@ubiquity/contracts/out/SushiSwapPool.sol/SushiSwapPool.json";
 import TWAPOracle from "@ubiquity/contracts/out/TWAPOracleDollar3pool.sol/TWAPOracleDollar3pool.json";
@@ -32,7 +32,7 @@ import UbiquityAlgorithmicDollarManager from "@ubiquity/contracts/out/UbiquityDo
 import UbiquityAlgorithmicDollar from "@ubiquity/contracts/out/UbiquityDollarToken.sol/UbiquityDollarToken.json";
 import UbiquityCredit from "@ubiquity/contracts/out/UbiquityCreditToken.sol/UbiquityCreditToken.json";
 import UbiquityFormulas from "@ubiquity/contracts/out/UbiquityFormulas.sol/UbiquityFormulas.json";
-import UBQ from "@ubiquity/contracts/out/UbiquityGovernanceToken.sol/UbiquityGovernanceToken.json";
+import GovernanceToken from "@ubiquity/contracts/out/UbiquityGovernanceToken.sol/UbiquityGovernanceToken.json";
 
 const getContract = (abi: ContractInterface, address: string, provider: ethers.providers.Provider) => {
   return new ethers.Contract(address, abi, provider);
@@ -114,8 +114,8 @@ export const getICouponsForDollarsCalculatorContract = (address: string, provide
   return getContract(ICouponsForDollarsCalculator.abi, address, provider);
 };
 
-export const getIUARForDollarsCalculatorContract = (address: string, provider: ethers.providers.Provider) => {
-  return getContract(IUARForDollarsCalculator.abi, address, provider);
+export const getICreditForDollarsCalculatorContract = (address: string, provider: ethers.providers.Provider) => {
+  return getContract(ICreditForDollarsCalculator.abi, address, provider);
 };
 
 export const getIMetaPoolContract = (address: string, provider: ethers.providers.Provider) => {
@@ -147,7 +147,7 @@ export const getUbiquityFormulasContract = (address: string, provider: ethers.pr
 };
 
 export const getUbqContract = (address: string, provider: ethers.providers.Provider) => {
-  return getContract(UBQ.abi, address, provider);
+  return getContract(GovernanceToken.abi, address, provider);
 };
 
 export const getUSDCTokenContract = (address: string, provider: ethers.providers.Provider) => {
