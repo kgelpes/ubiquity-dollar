@@ -28,7 +28,8 @@
     "prettier:all": "yarn workspaces foreach run prettier",
     "lint:all": "yarn workspaces foreach run lint",
     "build:ci:cloudflare": "bash ./utils/build_cloudflare.sh",
-    "build:ci:netlify": "yarn build:all"
+    "build:ci:netlify": "yarn build:all",
+    "lint:cspell": "npx nodemon --exec \"clear; npx cspell --config cspell.json --no-must-find-files '**/*.{ts,json,sol}' --no-progress; exit 0\""
   },
   "husky": {
     "hooks": {

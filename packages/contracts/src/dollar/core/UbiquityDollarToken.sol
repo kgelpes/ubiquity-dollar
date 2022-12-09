@@ -13,6 +13,7 @@ contract UbiquityDollarToken is ERC20Ubiquity {
     );
 
     constructor(address _manager)
+        // cspell:disable-line -- disables checking for the current line.
         ERC20Ubiquity(_manager, "Ubiquity Algorithmic Dollar", "uAD")
     {} // solhint-disable-line no-empty-blocks
 

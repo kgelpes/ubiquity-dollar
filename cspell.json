@@ -55,6 +55,8 @@
   "words": [
     "!UbiquityStick",
     "!uAD",
+    "!uCR",
+    "!UBQ",
     "Arrakis",
     "Chainlink",
     "DOLA",
@@ -79,8 +81,8 @@
     "Pausable",
     "masterchef",
     "struct",
-    "uGOV",
-    "UBOND",
+    "!uGOV",
+    "!UBOND",
     "Gelato",
     "ethersproject",
     "Mintable",
@@ -104,7 +106,7 @@
     "Reentrancy",
     "uncollateralized",
     "alloc",
-    "ubiquiti",
+    "!ubiquiti",
     "buildhome"
   ]
 }
