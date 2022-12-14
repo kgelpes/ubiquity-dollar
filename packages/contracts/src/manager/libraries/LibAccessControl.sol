@@ -2,20 +2,54 @@
 
 pragma solidity ^0.8.0;
 
+import {EnumerableSet} from "./EnumerableSet.sol";
 import {EnumerableSet} from "../libraries/EnumerableSet.sol";
 import {AddressUtils} from "../libraries/AddressUtils.sol";
 import {UintUtils} from "../libraries/UintUtils.sol";
-import {LibAccessControl} from "../libraries/LibAccessControl.sol";
 
-/**
- * @title Role-based access control system
- * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
- * @dev https://github.com/solidstate-network/solidstate-solidity/blob/master/contracts/access/access_control/AccessControlInternal.sol
- */
-abstract contract AccessControlInternal {
+library LibAccessControl {
     using AddressUtils for address;
     using EnumerableSet for EnumerableSet.AddressSet;
     using UintUtils for uint256;
+
+    struct RoleData {
+        EnumerableSet.AddressSet members;
+        bytes32 adminRole;
+    }
+
+    struct Layout {
+        mapping(bytes32 => RoleData) roles;
+    }
+
+    bytes32 internal constant DEFAULT_ADMIN_ROLE = 0x00;
+
+    bytes32 internal constant STORAGE_SLOT =
+        keccak256("ubiquity.contracts.access.control.storage");
+
+    event RoleAdminChanged(
+        bytes32 indexed role,
+        bytes32 indexed previousAdminRole,
+        bytes32 indexed newAdminRole
+    );
+
+    event RoleGranted(
+        bytes32 indexed role,
+        address indexed account,
+        address indexed sender
+    );
+
+    event RoleRevoked(
+        bytes32 indexed role,
+        address indexed account,
+        address indexed sender
+    );
+
+    function accessControlStorage() internal pure returns (Layout storage l) {
+        bytes32 slot = STORAGE_SLOT;
+        assembly {
+            l.slot := slot
+        }
+    }
 
     modifier onlyRole(bytes32 role) {
         _checkRole(role);
@@ -31,22 +65,16 @@ abstract contract AccessControlInternal {
     function _hasRole(bytes32 role, address account)
         internal
         view
-        virtual
         returns (bool)
     {
-        return
-            LibAccessControl
-                .accessControlStorage()
-                .roles[role]
-                .members
-                .contains(account);
+        return accessControlStorage().roles[role].members.contains(account);
     }
 
     /**
      * @notice revert if sender does not have given role
      * @param role role to query
      */
-    function _checkRole(bytes32 role) internal view virtual {
+    function _checkRole(bytes32 role) internal view {
         _checkRole(role, msg.sender);
     }
 
@@ -55,7 +83,7 @@ abstract contract AccessControlInternal {
      * @param role role to query
      * @param account to query
      */
-    function _checkRole(bytes32 role, address account) internal view virtual {
+    function _checkRole(bytes32 role, address account) internal view {
         if (!_hasRole(role, account)) {
             revert(
                 string(
@@ -75,13 +103,8 @@ abstract contract AccessControlInternal {
      * @param role role to query
      * @return admin role
      */
-    function _getRoleAdmin(bytes32 role)
-        internal
-        view
-        virtual
-        returns (bytes32)
-    {
-        return LibAccessControl.accessControlStorage().roles[role].adminRole;
+    function _getRoleAdmin(bytes32 role) internal view returns (bytes32) {
+        return accessControlStorage().roles[role].adminRole;
     }
 
     /**
@@ -89,17 +112,10 @@ abstract contract AccessControlInternal {
      * @param role role to set
      * @param adminRole admin role to set
      */
-    function _setRoleAdmin(bytes32 role, bytes32 adminRole) internal virtual {
+    function _setRoleAdmin(bytes32 role, bytes32 adminRole) internal {
         bytes32 previousAdminRole = _getRoleAdmin(role);
-        LibAccessControl
-            .accessControlStorage()
-            .roles[role]
-            .adminRole = adminRole;
-        emit LibAccessControl.RoleAdminChanged(
-            role,
-            previousAdminRole,
-            adminRole
-        );
+        accessControlStorage().roles[role].adminRole = adminRole;
+        emit RoleAdminChanged(role, previousAdminRole, adminRole);
     }
 
     /*
@@ -107,11 +123,9 @@ abstract contract AccessControlInternal {
      * @param role role to assign
      * @param account recipient of role assignment
      */
-    function _grantRole(bytes32 role, address account) internal virtual {
-        LibAccessControl.accessControlStorage().roles[role].members.add(
-            account
-        );
-        emit LibAccessControl.RoleGranted(role, account, msg.sender);
+    function _grantRole(bytes32 role, address account) internal {
+        accessControlStorage().roles[role].members.add(account);
+        emit RoleGranted(role, account, msg.sender);
     }
 
     /*
@@ -119,18 +133,16 @@ abstract contract AccessControlInternal {
      * @param role role to unassign
      * @parm account
      */
-    function _revokeRole(bytes32 role, address account) internal virtual {
-        LibAccessControl.accessControlStorage().roles[role].members.remove(
-            account
-        );
-        emit LibAccessControl.RoleRevoked(role, account, msg.sender);
+    function _revokeRole(bytes32 role, address account) internal {
+        accessControlStorage().roles[role].members.remove(account);
+        emit RoleRevoked(role, account, msg.sender);
     }
 
     /**
      * @notice relinquish role
      * @param role role to relinquish
      */
-    function _renounceRole(bytes32 role) internal virtual {
+    function _renounceRole(bytes32 role) internal {
         _revokeRole(role, msg.sender);
     }
 }

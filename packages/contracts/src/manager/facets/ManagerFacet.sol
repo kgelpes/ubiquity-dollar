@@ -2,7 +2,6 @@
 pragma solidity ^0.8.3;
 
 import {Modifiers} from "../libraries/LibAppStorage.sol";
-import {AccessControlStorage} from "../libraries/AccessControlStorage.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -21,8 +20,9 @@ contract ManagerFacet is Modifiers {
         s.twapOracleAddress = _twapOracleAddress;
         // to be removed
 
-        TWAPOracleDollar3pool oracle =
-            TWAPOracleDollar3pool(s.twapOracleAddress);
+        TWAPOracleDollar3pool oracle = TWAPOracleDollar3pool(
+            s.twapOracleAddress
+        );
         oracle.update();
     }
 
@@ -40,10 +40,7 @@ contract ManagerFacet is Modifiers {
         s.creditTokenAddress = _creditTokenAddress;
     }
 
-    function setCreditNFTAddress(address _creditNFTAddress)
-        external
-        onlyAdmin
-    {
+    function setCreditNFTAddress(address _creditNFTAddress) external onlyAdmin {
         s.creditNFTAddress = _creditNFTAddress;
     }
 
@@ -129,7 +126,8 @@ contract ManagerFacet is Modifiers {
         onlyAdmin
     {
         IUbiquityDollarToken(s.dollarTokenAddress).setIncentiveContract(
-            _account, _incentiveAddress
+            _account,
+            _incentiveAddress
         );
     }
 
@@ -152,10 +150,12 @@ contract ManagerFacet is Modifiers {
         s.stableSwapMetaPoolAddress = metaPool;
 
         // Approve the newly-deployed meta pool to transfer this contract's funds
-        uint256 crv3PoolTokenAmount =
-            IERC20(_crv3PoolTokenAddress).balanceOf(address(this));
-        uint256 dollarTokenAmount =
-            IERC20(s.dollarTokenAddress).balanceOf(address(this));
+        uint256 crv3PoolTokenAmount = IERC20(_crv3PoolTokenAddress).balanceOf(
+            address(this)
+        );
+        uint256 dollarTokenAmount = IERC20(s.dollarTokenAddress).balanceOf(
+            address(this)
+        );
 
         // safe approve revert if approve from non-zero to non-zero allowance
         IERC20(_crv3PoolTokenAddress).approve(metaPool, 0);
@@ -166,8 +166,8 @@ contract ManagerFacet is Modifiers {
 
         // coin at index 0 is uAD and index 1 is 3CRV
         require(
-            IMetaPool(metaPool).coins(0) == s.dollarTokenAddress
-                && IMetaPool(metaPool).coins(1) == _crv3PoolTokenAddress,
+            IMetaPool(metaPool).coins(0) == s.dollarTokenAddress &&
+                IMetaPool(metaPool).coins(1) == _crv3PoolTokenAddress,
             "MGR: COIN_ORDER_MISMATCH"
         );
         // Add the initial liquidity to the StableSwap meta pool
