@@ -4,34 +4,16 @@ pragma solidity ^0.8.3;
 import {Modifiers} from "../libraries/LibAppStorage.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 import "../../dollar/interfaces/IUbiquityDollarToken.sol";
 import "../../dollar/interfaces/ICurveFactory.sol";
 import "../../dollar/interfaces/IMetaPool.sol";
 import "../../dollar/core/TWAPOracleDollar3pool.sol";
+import "../libraries/LibAccessControl.sol";
+import "../libraries/LibUbiquityDollarToken.sol";
 
 contract ManagerFacet is Modifiers {
     // TODO Add a generic setter for extra addresses that needs to be linked
-    function setTwapOracleAddress(address _twapOracleAddress)
-        external
-        onlyAdmin
-    {
-        s.twapOracleAddress = _twapOracleAddress;
-        // to be removed
-
-        TWAPOracleDollar3pool oracle = TWAPOracleDollar3pool(
-            s.twapOracleAddress
-        );
-        oracle.update();
-    }
-
-    function setDollarTokenAddress(address _dollarTokenAddress)
-        external
-        onlyAdmin
-    {
-        s.dollarTokenAddress = _dollarTokenAddress;
-    }
 
     function setCreditTokenAddress(address _creditTokenAddress)
         external
@@ -125,7 +107,7 @@ contract ManagerFacet is Modifiers {
         external
         onlyAdmin
     {
-        IUbiquityDollarToken(s.dollarTokenAddress).setIncentiveContract(
+        LibUbiquityDollarToken.setIncentiveContract(
             _account,
             _incentiveAddress
         );
@@ -141,9 +123,9 @@ contract ManagerFacet is Modifiers {
         // Create new StableSwap meta pool (uAD <-> 3Crv)
         address metaPool = ICurveFactory(_curveFactory).deploy_metapool(
             _crvBasePool,
-            ERC20(s.dollarTokenAddress).name(),
-            ERC20(s.dollarTokenAddress).symbol(),
-            s.dollarTokenAddress,
+            ERC20(address(this)).name(),
+            ERC20(address(this)).symbol(),
+            address(this),
             _amplificationCoefficient,
             _fee
         );
@@ -153,7 +135,7 @@ contract ManagerFacet is Modifiers {
         uint256 crv3PoolTokenAmount = IERC20(_crv3PoolTokenAddress).balanceOf(
             address(this)
         );
-        uint256 dollarTokenAmount = IERC20(s.dollarTokenAddress).balanceOf(
+        uint256 dollarTokenAmount = IERC20(address(this)).balanceOf(
             address(this)
         );
 
@@ -161,18 +143,18 @@ contract ManagerFacet is Modifiers {
         IERC20(_crv3PoolTokenAddress).approve(metaPool, 0);
         IERC20(_crv3PoolTokenAddress).approve(metaPool, crv3PoolTokenAmount);
 
-        IERC20(s.dollarTokenAddress).approve(metaPool, 0);
-        IERC20(s.dollarTokenAddress).approve(metaPool, dollarTokenAmount);
+        IERC20(address(this)).approve(metaPool, 0);
+        IERC20(address(this)).approve(metaPool, dollarTokenAmount);
 
         // coin at index 0 is uAD and index 1 is 3CRV
         require(
-            IMetaPool(metaPool).coins(0) == s.dollarTokenAddress &&
+            IMetaPool(metaPool).coins(0) == address(this) &&
                 IMetaPool(metaPool).coins(1) == _crv3PoolTokenAddress,
             "MGR: COIN_ORDER_MISMATCH"
         );
         // Add the initial liquidity to the StableSwap meta pool
         uint256[2] memory amounts = [
-            IERC20(s.dollarTokenAddress).balanceOf(address(this)),
+            IERC20(address(this)).balanceOf(address(this)),
             IERC20(_crv3PoolTokenAddress).balanceOf(address(this))
         ];
 
@@ -182,11 +164,11 @@ contract ManagerFacet is Modifiers {
     }
 
     function getTwapOracleAddress() external view returns (address) {
-        return s.twapOracleAddress;
+        return address(this);
     }
 
     function getDollarTokenAddress() external view returns (address) {
-        return s.dollarTokenAddress;
+        return address(this);
     }
 
     function getCreditTokenAddress() external view returns (address) {
