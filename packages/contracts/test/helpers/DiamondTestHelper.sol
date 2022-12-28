@@ -4,8 +4,8 @@ pragma solidity ^0.8.3;
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 import "forge-std/console.sol";
-import "../../src/manager/interfaces/IDiamondCut.sol";
-import "../../src/manager/interfaces/IDiamondLoupe.sol";
+import "../../src/diamond/interfaces/IDiamondCut.sol";
+import "../../src/diamond/interfaces/IDiamondLoupe.sol";
 
 contract DiamondTestHelper is IDiamondCut, IDiamondLoupe, Test {
     uint256 private seed;
@@ -48,7 +48,7 @@ contract DiamondTestHelper is IDiamondCut, IDiamondLoupe, Test {
         pure
         returns (bytes4[] memory)
     {
-        bytes4[] memory newarray = new bytes4[](array.length-1);
+        bytes4[] memory newarray = new bytes4[](array.length - 1);
         uint256 j = 0;
         for (uint256 i = 0; i < array.length; i++) {
             if (i != index) {
@@ -130,8 +130,11 @@ contract DiamondTestHelper is IDiamondCut, IDiamondLoupe, Test {
         uint256 pos = 0;
         bytes4[] memory selectors = new bytes4[](len);
         for (uint256 i = 0; i < facetList.length; i++) {
-            for (uint256 j = 0; j < facetList[i].functionSelectors.length; j++)
-            {
+            for (
+                uint256 j = 0;
+                j < facetList[i].functionSelectors.length;
+                j++
+            ) {
                 selectors[pos] = facetList[i].functionSelectors[j];
                 pos += 1;
             }
@@ -144,9 +147,8 @@ contract DiamondTestHelper is IDiamondCut, IDiamondLoupe, Test {
         view
         returns (bool)
     {
-        return (
-            keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b)))
-        );
+        return (keccak256(abi.encodePacked((a))) ==
+            keccak256(abi.encodePacked((b))));
     }
 
     // implement dummy override functions
@@ -155,20 +157,24 @@ contract DiamondTestHelper is IDiamondCut, IDiamondLoupe, Test {
         address _init,
         bytes calldata _calldata
     ) external {}
+
     function facetAddress(bytes4 _functionSelector)
         external
         view
         returns (address facetAddress_)
     {}
+
     function facetAddresses()
         external
         view
         returns (address[] memory facetAddresses_)
     {}
+
     function facetFunctionSelectors(address _facet)
         external
         view
         returns (bytes4[] memory facetFunctionSelectors_)
     {}
+
     function facets() external view returns (Facet[] memory facets_) {}
 }
